@@ -1,121 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="utf-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1" />
    <title>Rapunzel's Game Page</title>
 
-
-   <!-- Import Comfortaa font from Google Fonts -->
+   <!-- site stylesheet (ensure this path exists) -->
+   <link rel="stylesheet" href="CSS/styles.css">
    <link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet">
 
-
    <style>
-      body {
-         font-family: 'Comfortaa', cursive;
-         margin: 0;
-         padding: 0;
-         background-color: white;
-         display: flex;
-         flex-direction: column;
-         min-height: 100vh;
-      }
-
-
-      nav ul {
-         list-style: none;
-         padding: 0;
-         margin: 0;
-         display: flex;
-         justify-content: center;
-         gap: 15px;
-         background-color: #1B365D;
-      }
-
-
-      nav ul li a {
-         color: #072b42;
-         text-decoration: none;
-         padding: 20px 15px; /* Increased padding for double height */
-         font-size: 1.2rem;   /* Slightly larger font */
-         display: block;
-      }
-
-
-      nav ul li a:hover {
-         background-color: #25749c;
-         color: #c0e9ff;
-      }
-
-
-      .game-container {
-         flex: 1;
-         display: flex;
-         flex-direction: column;
-         align-items: center;
-         justify-content: center;
-         padding: 20px;
-         text-align: center;
-      }
-
-
-      h1 {
-         margin-bottom: 20px;
-         color: #c0e9ff;
-         font-size: 3rem; /* Adjusted for visibility */
-      }
-
-
-      #message {
-         font-size: 1.2rem;
-         margin-bottom: 15px;
-         min-height: 1.5em;
-         color: #c0e9ff;
-      }
-
-
-      #game {
-         display: inline-grid;
-         grid-template-columns: repeat(3, 100px);
-         grid-template-rows: repeat(3, 100px);
-         gap: 5px;
-         margin-bottom: 20px;
-      }
-
-
-      .cell {
-         background-color: #c0e9ff;
-         border: 5px solid #2d4453;
-         font-size: 50px;
-         cursor: pointer;
-         display: flex;
-         align-items: center;
-         justify-content: center;
-         user-select: none;
-         transition: background-color 0.3s;
-      }
-
-
-      .cell:hover {
-         background-color: #b0d9ee;
-      }
-
-
-      #resetButton {
-         padding: 10px 20px;
-         font-size: 1rem;
-         cursor: pointer;
-         border: none;
-         background-color: #2d4453;
-         color: #c0e9ff;
-         border-radius: 5px;
-         transition: background-color 0.3s;
-      }
-
-
-      #resetButton:hover {
-         background-color: #2d4453;
-      }
+      /* game-specific styles only */
+      body { margin:0; padding:0; background-color:#fff; display:flex; flex-direction:column; min-height:100vh; }
+      .game-container { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px; text-align:center; }
+      h1 { margin-bottom:20px; font-size:3rem; }
+      #message { font-size:1.2rem; margin-bottom:15px; min-height:1.5em; }
+      #game { display:inline-grid; grid-template-columns:repeat(3,100px); grid-template-rows:repeat(3,100px); gap:5px; margin-bottom:20px; }
+      .cell { background-color:#c0e9ff; border:5px solid #2d4453; font-size:50px; cursor:pointer; display:flex; align-items:center; justify-content:center; user-select:none; transition:background-color .3s; }
+      .cell:hover { background-color:#b0d9ee; }
+      #controls { display:flex; gap:12px; align-items:center; }
+      #resetButton { padding:10px 20px; font-size:1rem; cursor:pointer; border:none; background-color:#2d4453; color:#c0e9ff; border-radius:5px; transition:background-color .3s; }
+      #resetButton:hover { background-color:#233541; }
+      #muteButton { padding:8px 14px; font-size:.95rem; cursor:pointer; border:2px solid #2d4453; background:transparent; color:#2d4453; border-radius:5px; }
+      #muteButton.active { background-color:#2d4453; color:#c0e9ff; }
    </style>
 </head>
 <body>
@@ -130,10 +37,10 @@
        </ul>
    </nav>
 
-
    <div class="game-container">
       <h1>This is the Game Page</h1>
       <div id="message">Your turn!</div>
+
       <div id="game">
          <div class="cell" data-index="0"></div>
          <div class="cell" data-index="1"></div>
@@ -145,136 +52,216 @@
          <div class="cell" data-index="7"></div>
          <div class="cell" data-index="8"></div>
       </div>
-      <button id="resetButton">Restart Game</button>
+
+      <div id="controls">
+         <button id="resetButton">Restart Game</button>
+         <button id="muteButton">🔈 Mute</button>
+      </div>
    </div>
 
+   <!-- Audio files (place in /audio/): bg.mp3, player.wav, ai.wav, win.wav, lose.wav, draw.wav, win_effect.mp3 -->
+   <audio id="bgMusic" src="audio/bg.mp3" loop preload="auto"></audio>
+   <audio id="playerSound" src="audio/player.wav" preload="auto"></audio>
+   <audio id="aiSound" src="audio/ai.wav" preload="auto"></audio>
+   <audio id="winSound" src="audio/win.wav" preload="auto"></audio>
+   <audio id="loseSound" src="audio/lose.wav" preload="auto"></audio>
+   <audio id="drawSound" src="audio/draw.wav" preload="auto"></audio>
+   <audio id="winEffect" src="audio/win_effect.mp3" preload="auto"></audio>
 
    <script>
+      // game state
       const gameBoard = ['', '', '', '', '', '', '', '', ''];
-      const bulldog = '🐶';  // Player
-      const bone = '🦴';     // Computer
+      const bulldog = '🐶';
+      const bone = '🦴';
       let currentPlayer = bulldog;
       let gameActive = true;
       let autoRestartTimeout = null;
 
-
       const winningConditions = [
-         [0,1,2],
-         [3,4,5],
-         [6,7,8],
-         [0,3,6],
-         [1,4,7],
-         [2,5,8],
-         [0,4,8],
-         [2,4,6]
+         [0,1,2],[3,4,5],[6,7,8],
+         [0,3,6],[1,4,7],[2,5,8],
+         [0,4,8],[2,4,6]
       ];
 
-
+      // DOM
       const cells = document.querySelectorAll('.cell');
       const message = document.getElementById('message');
       const resetButton = document.getElementById('resetButton');
+      const muteButton = document.getElementById('muteButton');
 
+      // audio elements
+      const bgMusic = document.getElementById('bgMusic');
+      const playerSound = document.getElementById('playerSound');
+      const aiSound = document.getElementById('aiSound');
+      const winSound = document.getElementById('winSound');
+      const loseSound = document.getElementById('loseSound');
+      const drawSound = document.getElementById('drawSound');
+      const winEffect = document.getElementById('winEffect');
 
+      let isMuted = false;
+      let musicStarted = false;
+
+      // improved audio start - sets volume/unmute and attempts play
+      function startMusicIfNeeded() {
+         if (isMuted || musicStarted) return;
+         musicStarted = true;
+         try {
+            bgMusic.volume = 0.45;
+            bgMusic.muted = false;
+            bgMusic.currentTime = 0;
+            bgMusic.play().catch(err => {
+               console.warn('bgMusic play rejected:', err);
+            });
+         } catch (err) {
+            console.error('startMusicIfNeeded error:', err);
+         }
+      }
+
+      // one-time unlock on first user gesture to help browsers allow subsequent audio.play()
+      document.body.addEventListener('pointerdown', () => {
+         startMusicIfNeeded();
+      }, { once: true, capture: true });
+
+      // play outcome sound, duck bg, fallback if needed
+      function playOutcomeSound(player) {
+         startMusicIfNeeded();
+         if (isMuted) return;
+         try {
+            // ensure clips audible
+            winSound.volume = 1;
+            loseSound.volume = 1;
+            winEffect.volume = 0.95;
+
+            // duck bg music
+            const prevBgVol = typeof bgMusic.volume === 'number' ? bgMusic.volume : 0.45;
+            try { bgMusic.volume = Math.max(0.05, prevBgVol * 0.25); } catch(e){}
+
+            if (player === bulldog) {
+               // primary win sound
+               winSound.currentTime = 0;
+               winSound.play().catch(err => {
+                  console.warn('winSound play failed, fallback:', err);
+                  try { new Audio('audio/win.wav').play().catch(()=>{}); } catch(e){}
+               });
+
+               // small layered effect
+               winEffect.currentTime = 0;
+               winEffect.play().catch(()=>{});
+
+               // restore bg when winSound ends or after timeout
+               const restoreBg = () => { try { bgMusic.volume = prevBgVol; } catch(e){} };
+               winSound.addEventListener('ended', restoreBg, { once: true });
+               setTimeout(restoreBg, 3000);
+            } else {
+               loseSound.currentTime = 0;
+               loseSound.play().catch(err => {
+                  console.warn('loseSound play failed, fallback:', err);
+                  try { new Audio('audio/lose.wav').play().catch(()=>{}); } catch(e){}
+               });
+               setTimeout(() => { try { bgMusic.volume = prevBgVol; } catch(e){} }, 1200);
+            }
+         } catch(e) {
+            console.error('playOutcomeSound error', e);
+            try { bgMusic.volume = 0.45; } catch(e){}
+         }
+      }
+
+      // game logic
       function handleCellClick(e) {
          const index = e.target.getAttribute('data-index');
+         if (gameBoard[index] !== '' || !gameActive || currentPlayer !== bulldog) return;
 
-
-         if (gameBoard[index] !== '' || !gameActive || currentPlayer !== bulldog) {
-            return;
-         }
-
-
+         startMusicIfNeeded();
          makeMove(index, bulldog);
-
-
          if (!gameActive) return;
-
 
          currentPlayer = bone;
          message.textContent = "Computer's turn!";
-         setTimeout(computerMove, 700);
+         setTimeout(() => {
+            if (!isMuted) {
+               aiSound.currentTime = 0;
+               aiSound.play().catch(()=>{});
+            }
+            computerMove();
+         }, 700);
       }
-
 
       function makeMove(index, player) {
          gameBoard[index] = player;
          cells[index].textContent = player;
 
+         if (!isMuted && player === bulldog) {
+            playerSound.currentTime = 0;
+            playerSound.play().catch(()=>{});
+         }
 
          if (checkWin()) {
-            message.textContent = `${player === bulldog ? 'You ' : 'Computer '} won! 🎉`;
+            message.textContent = `${player === bulldog ? 'You' : 'Computer'} won! 🎉`;
             gameActive = false;
+            playOutcomeSound(player);
             scheduleRestart();
             return;
          }
-
 
          if (isDraw()) {
             message.textContent = "It's a draw!";
             gameActive = false;
+            if (!isMuted) { drawSound.currentTime = 0; drawSound.play().catch(()=>{}); }
             scheduleRestart();
             return;
          }
 
-
          currentPlayer = player === bulldog ? bone : bulldog;
-         if (gameActive) {
-            message.textContent = currentPlayer === bulldog ? "Your turn!" : "Computer's turn!";
-         }
+         if (gameActive) message.textContent = currentPlayer === bulldog ? "Your turn!" : "Computer's turn!";
       }
-
 
       function computerMove() {
          if (!gameActive) return;
-
-
-         const availableIndices = gameBoard
-            .map((val, idx) => val === '' ? idx : null)
-            .filter(val => val !== null);
-
-
-         if (availableIndices.length === 0) return;
-
-
-         const randomIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
-         makeMove(randomIndex, bone);
+         const available = gameBoard.map((v,i)=> v===''?i:null).filter(v=>v!==null);
+         if (available.length === 0) return;
+         const idx = available[Math.floor(Math.random()*available.length)];
+         makeMove(idx, bone);
       }
 
-
       function checkWin() {
-         return winningConditions.some(condition => {
-            const [a, b, c] = condition;
+         return winningConditions.some(([a,b,c]) => {
             return gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[b] === gameBoard[c];
          });
       }
 
-
-      function isDraw() {
-         return gameBoard.every(cell => cell !== '');
-      }
-
+      function isDraw() { return gameBoard.every(cell => cell !== ''); }
 
       function resetGame() {
          clearTimeout(autoRestartTimeout);
-         for (let i = 0; i < gameBoard.length; i++) {
-            gameBoard[i] = '';
-            cells[i].textContent = '';
+         for (let i=0;i<gameBoard.length;i++){ gameBoard[i]=''; cells[i].textContent=''; }
+         currentPlayer = bulldog; gameActive = true; message.textContent = 'Your turn!';
+         if (!isMuted && musicStarted) { bgMusic.currentTime = 0; bgMusic.play().catch(()=>{}); }
+      }
+
+      function scheduleRestart() { autoRestartTimeout = setTimeout(resetGame, 2000); }
+
+      function toggleMute() {
+         isMuted = !isMuted;
+         if (isMuted) {
+            try { bgMusic.pause(); } catch(e){}
+            muteButton.classList.add('active'); muteButton.textContent = '🔇 Muted';
+         } else {
+            muteButton.classList.remove('active'); muteButton.textContent = '🔈 Mute';
+            if (musicStarted) bgMusic.play().catch(()=>{});
          }
-         currentPlayer = bulldog;
-         gameActive = true;
-         message.textContent = `Your turn!`;
       }
 
-
-      function scheduleRestart() {
-         autoRestartTimeout = setTimeout(() => {
-            resetGame();
-         }, 2000);
-      }
-
-
+      // events
       cells.forEach(cell => cell.addEventListener('click', handleCellClick));
       resetButton.addEventListener('click', resetGame);
+      muteButton.addEventListener('click', toggleMute);
+
+      window.addEventListener('pagehide', () => { try { bgMusic.pause(); } catch(e){} });
    </script>
+ <a class="external-link" href="https://www.umdmis.com" target="_blank">Visit UMD MIS</a>
+    </main>
+ <footer>
+        <p>© 2025 Rapunzel</p>
+    </footer>
 </body>
 </html>

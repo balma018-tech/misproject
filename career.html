@@ -19,9 +19,74 @@
         </ul>
     </nav> 
     <h1>This is my Career Page</h1>
-    <a href="https://www.umdmis.com">This is a link</a>
-    <img src="images/mypic.jpg" height="800" alt="My Picture">
-    
+    <img src="images/mypic.jpg" style="width: 60%; max-width: 300px; border-radius: 10px; display: block; margin: 0 auto;" alt="My professional picture">
+      <section class="job-experiences" aria-label="Job opportunities" style="max-width:1000px;margin:28px auto;padding:0 12px;">
+        <h2 style="text-align:center;margin-bottom:14px;">Job Opportunities</h2>
+        <style>
+          /* job section styles (place in page or move to CSS/styles.css) */
+          .job-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 18px;
+            align-items: start;
+          }
+          @media (min-width:860px) {
+            .job-grid { grid-template-columns: 1fr 1fr; }
+          }
+          .job-card {
+            background:#fff;
+            border:1px solid #e6e6e6;
+            border-radius:8px;
+            padding:16px;
+            box-shadow:0 6px 18px rgba(18,38,63,0.04);
+          }
+          .job-card h3 { margin:0 0 6px; font-size:1.05rem; color:#1B365D; }
+          .job-meta { font-size:0.92rem; color:#444; margin-bottom:8px; }
+          .job-meta a { color:#1B365D; text-decoration:none; }
+          .job-body { font-size:0.95rem; color:#222; line-height:1.45; }
+          .job-address { font-size:0.9rem; color:#666; margin-top:8px; }
+        </style>
+
+        <div class="job-grid">
+          <article class="job-card" aria-labelledby="wypaw-title">
+            <h3 id="wypaw-title">WyPaw – Part-Time / Flexible Pet Sitter &amp; Dog Walker (Remote)</h3>
+            <div class="job-meta">
+              <strong>Contact:</strong>
+              <a href="mailto:support@wypaw.com">support@wypaw.com</a>
+            </div>
+            <div class="job-address">
+              WyPaw<br>
+              2570 N. First Street Suite 200-100A<br>
+              PMB 70186, San Jose, CA 95131
+            </div>
+            <div class="job-body" aria-describedby="wypaw-title">
+                <h4>Qualifications </h4>
+              <p>I am interested in this job because I love pets and taking care of them. I’m qualified because I have a reptile and a horse, and take great care of both of them. Since I only have those animals, working for WyPaw would give me new opportunities to work with animals of all types. Working with different kinds of animals would give me new skills and knowledge that I could pass on to the animal caregivers back in the kingdom.</p>
+            </div>
+          </article>
+
+          <article class="job-card" aria-labelledby="art-title">
+            <h3 id="art-title">Art Class Instructor — Hawaii Fluid Art</h3>
+            <div class="job-meta">
+              <strong>Contact:</strong>
+              <span>615-969-9908</span>
+            </div>
+            <div class="job-address">
+              Hawaii Fluid Art<br>
+              401 S Mt Juliet Rd #535<br>
+              Mt. Juliet, TN 37122
+            </div>
+            <div class="job-body" aria-describedby="art-title">
+                <h4>Qualifications</h4>
+              <p>I am interested in this job because I love painting and art and want to share it with others. I’d also like to get out of Corona and explore the United States a bit, so this seems like the perfect opportunity for me. I’m qualified because I’ve been painting for over ten years and have used many different mediums. Being able to teach art while exploring new mediums myself aligns with my skills perfectly and would be a great opportunity for me.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+ <a class="external-link" href="https://www.umdmis.com" target="_blank">Visit UMD MIS</a>
+    </main>
+
+
     <footer>
         <p>© 2025 Rapunzel</p>
     </footer>

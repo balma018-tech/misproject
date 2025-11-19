@@ -1,28 +1,75 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resume Page - Rapunzel's Website</title>
-    <link rel="stylesheet" href="CSS/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Resume Page - Rapunzel's Website</title>
+  <link rel="stylesheet" href="CSS/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+  <style>
+    .image-section { max-width:900px; margin:18px auto; text-align:center; }
+    .resume-actions { margin-top:12px; }
+    .resume-embed { width:100%; height:800px; border:1px solid #ddd; }
+  </style>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="hobbies.html">Hobbies</a></li>
-            <li><a href="discover.html">Discover UMD</a></li>
-            <li><a href="resume.html">Resume</a></li>
-            <li><a href="career.html">Career</a></li>
-            <li><a href="game.html">Game</a></li>
-        </ul>
-    </nav> 
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="hobbies.html">Hobbies</a></li>
+      <li><a href="discover.html">Discover UMD</a></li>
+      <li><a href="resume.html">Resume</a></li>
+      <li><a href="career.html">Career</a></li>
+      <li><a href="game.html">Game</a></li>
+    </ul>
+  </nav>
+
+  <main class="image-section">
     <h1>This is my Resume Page</h1>
-    <a href="https://www.umdmis.com">Visit UMD MIS</a>
-    <section class="image-section">
-        <img src="images/Rapunzel_Resume.jpg" alt="My Resume">
-    </section>
+
+    <!-- Try to embed the PDF; browser will show the PDF if supported -->
+    <object id="resumeObject" class="resume-embed" data="files/Rapunzel_Resume.pdf" type="application/pdf">
+      <!-- Fallback: show the image if PDF can't be rendered -->
+      <img id="resumeImage" src="images/Rapunzel_Resume.jpg" alt="Resume image" style="max-width:100%;height:auto;">
+      <p>If you can't see the resume above, <a href="files/Rapunzel_Resume.pdf" download="Rapunzel_Resume.pdf">download the PDF</a> or view the image above.</p>
+    </object>
+
+    <div class="resume-actions">
+      <a href="files/Rapunzel_Resume.pdf" download="Rapunzel_Resume.pdf"
+         style="display:inline-block;padding:10px 14px;background:#1B365D;color:#fff;border-radius:6px;text-decoration:none;">
+         Download PDF
+      </a>
+    </div>
+  </main>
+
+  <script>
+    // quick diagnostics in console and visible fallback behavior
+    (async function(){
+      try {
+        const head = await fetch('files/Rapunzel_Resume.pdf', { method: 'HEAD' });
+        console.log('PDF HEAD status:', head.status, head.statusText);
+        if (!head.ok) console.warn('Resume PDF not found at files/Rapunzel_Resume.pdf');
+
+        // check image exists too
+        const imgHead = await fetch('images/Rapunzel_Resume.jpg', { method: 'HEAD' });
+        console.log('Image HEAD status:', imgHead.status, imgHead.statusText);
+        if (!imgHead.ok) console.warn('Resume image not found at images/Rapunzel_Resume.jpg');
+
+        // If PDF exists but embedding failed (some browsers), keep image visible
+        const obj = document.getElementById('resumeObject');
+        obj.addEventListener('error', () => {
+          console.warn('Object embed error — showing image fallback.');
+          const img = document.getElementById('resumeImage');
+          if (img) img.style.display = 'block';
+        });
+      } catch (err) {
+        console.error('Error checking resume files:', err);
+      }
+    })();
+  </script>
+  </main>
+ <a class="external-link" href="https://www.umdmis.com" target="_blank">Visit UMD MIS</a>
+    </main>
     <footer>
         <p>© 2025 Rapunzel</p>
     </footer>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page - Rapunzel's Website</title>
+    <link rel="stylesheet" href="CSS/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+
+    <style>
+      /* page-specific tweaks: larger but not full-screen media */
+      .welcome-video { display:flex; justify-content:center; margin:24px 0; }
+
+      /* Video: allow it to grow but constrain relative to viewport */
+      .welcome-video video {
+        width: min(760px, 86vw); /* no wider than 760px, or 86% of viewport */
+        height: auto;
+        max-height: 70vh;      /* never cover most of the screen height */
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      }
+      /* Images: larger but constrained so they don't fill the screen */
+      .image-section img,
+      .hobby-card img {
+        width: min(560px, 72vw); /* no wider than 560px, or 72% of viewport */
+        height: auto;
+        max-height: 55vh;       /* keep images from taking most of screen height */
+        display: block;
+        margin: 0 auto;
+        border-radius: 6px;
+        object-fit: contain;
+      }
+
+      /* Layout tweaks */
+      .image-section { max-width:1000px; margin:24px auto; text-align:center; padding:0 12px; }
+      .hobby-card { display:inline-block; vertical-align:top; width: calc(min(320px, 46vw)); margin:12px; text-align:center; }
+      .hobby-card h3 { margin:8px 0 6px; }
+      .hobby-card p { margin:0 8px 12px; }
+
+      @media (min-width:1200px){
+        .welcome-video video { width: 760px; }
+        .image-section img { width: 560px; }
+      }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="hobbies.html">Hobbies</a></li>
+            <li><a href="discover.html">Discover UMD</a></li>
+            <li><a href="resume.html">Resume</a></li>
+            <li><a href="career.html">Career</a></li>
+            <li><a href="game.html">Game</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="content-block">
+            <h1>Welcome to My Page 🌿</h1>
+            <p>
+                Hi there! Welcome to my website! — I have pages that share my hobbies,
+                career goals, resume, and even an interactive game! 
+            </p>
+        </section>
+        <section class="image-section">
+            <img src="images/mypic.jpg" alt="A proessional picture of me: Rapunzel">
+            <h1>Welcome! I'm Rapunzel</h1>
+            <p>I'm a royal princess! Some of my professional interests include painting, being royal, and being a veterarian to Pascal!</p>
+        </section>
+
+        <section class="welcome-video">
+            <h2 style="display:none;">Get to Know Me</h2>
+            <video controls aria-label="Welcome video">
+                <source src="videos/welcome.mp4" type="video/mp4">
+                Your browser does not support video.
+            </video>
+        </section>
+
+        <section class="hobbies-preview">
+            <h2>My Interests</h2>
+            <div class="hobby-card">
+                <img src="images/hobby1.jpg" alt="Me painting floating lanterns">
+                <h3>Painting</h3>
+                <p>I love painting because I get to use my imagination and be creative.</p>
+            </div>
+
+            <div class="hobby-card">
+                <img src="images/hobby2.jpg" alt="Me holding a pie that I baked">
+                <h3>Baking</h3>
+                <p>I love baking because I get to try new recipes from around the world!</p>
+            </div>
+
+            <div style="clear:both;"></div>
+            <a href="hobbies.html">Learn more about my hobbies →</a>
+        </section>
+    </main>
+ <a class="external-link" href="https://www.umdmis.com" target="_blank">Visit UMD MIS</a>
+    </main>
+    <footer>
+        <p>© 2025 Rapunzel</p>
+    </footer>
+</body>
+</html>
